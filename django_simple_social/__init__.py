@@ -23,7 +23,7 @@ def autodiscover():
         try:
             before_import_registry = copy(site._registry)
             import_module('%s.backends' % app)
-        except Exception, exc:
+        except Exception as exc:
             # Reset the model registry to the state before the last import as
             # this import will have to reoccur on the next request and this
             # could raise NotRegistered and AlreadyRegistered exceptions

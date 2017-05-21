@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-from urllib import urlencode
+from urllib.parse import urlencode
 
 from django.conf import settings
 from django.core.urlresolvers import reverse
@@ -108,7 +108,7 @@ class FacebookBackend(GenericSocialUserBackend):
         oauth_object = graph.get_object('me')
 
         if oauth_object:
-            return oauth_object, unicode(oauth_object['id'])
+            return oauth_object, str(oauth_object['id'])
         else:
             raise SocialOauthDictFailed
 
@@ -177,7 +177,7 @@ class LinkedInBackend(GenericSocialUserBackend):
 
     def get_oauth_authorization_url(
             self, oauth_request_token, url_prefix='', params=None):
-        return u'%s?%s' % (
+        return '%s?%s' % (
             self.client.authorize_path, urlencode(oauth_request_token))
 
     def get_oauth_dict(self, access_token):
@@ -194,7 +194,7 @@ class LinkedInBackend(GenericSocialUserBackend):
         if oauth_object:
             oauth_object['email'] = self.client.get_email_address(
                 access_token)
-            return oauth_object, unicode(oauth_object.get(
+            return oauth_object, str(oauth_object.get(
                 li_constants.BasicProfileFields.ID))
         else:
             raise SocialOauthDictFailed
@@ -301,7 +301,7 @@ class TwitterBackend(GenericSocialUserBackend):
         })
 
         if oauth_object:
-            return oauth_object, unicode(access_token['user_id'])
+            return oauth_object, str(access_token['user_id'])
         else:
             raise SocialOauthDictFailed
 
